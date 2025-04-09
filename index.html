@@ -5,60 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CookMitra - Your Recipe Assistant</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Cook<span class="hindi">मित्र</span></h1>
-            <p>Get personalized recipes based on your preferences!</p>
-        </header>
-        
-        <main>
-            <div class="recipe-container">
-                <div class="input-form" id="input-form">
-                    <div class="form-step active" id="ingredients-step">
-                        <h2>Step 1: What ingredients do you have?</h2>
-                        <p>Enter the ingredients you have available (comma separated)</p>
-                        <input type="text" id="ingredients-input" placeholder="e.g., chicken, rice, tomatoes, onions">
-                        <button class="next-btn" onclick="nextStep('ingredients')">Next</button>
-                    </div>
-
-                    <div class="form-step" id="cuisine-step">
-                        <h2>Step 2: What type of cuisine do you prefer?</h2>
-                        <select id="cuisine-input">
-                            <option value="">Select a cuisine</option>
-                            <option value="italian">Italian</option>
-                            <option value="indian">Indian</option>
-                            <option value="chinese">Chinese</option>
-                            <option value="mexican">Mexican</option>
-                            <option value="american">American</option>
-                        </select>
-                        <button class="next-btn" onclick="nextStep('cuisine')">Next</button>
-                    </div>
-
-                    <div class="form-step" id="servings-step">
-                        <h2>Step 3: How many servings do you need?</h2>
-                        <input type="number" id="servings-input" min="1" max="20" value="4">
-                        <button class="next-btn" onclick="nextStep('servings')">Generate Recipe</button>
-                    </div>
+            <p class="tagline">Your personal recipe assistant for delicious meals!</p>
+            <div class="food-categories">
+                <div class="category">
+                    <i class="fas fa-utensils"></i>
+                    <span>Quick Meals</span>
                 </div>
-
-                <div class="recipe-card" id="recipe-card" style="display: none;">
-                    <h2 id="recipe-name">Your Personalized Recipe</h2>
-                    <div class="recipe-details">
-                        <div class="ingredients">
-                            <h3>Ingredients</h3>
-                            <ul id="ingredients-list"></ul>
-                        </div>
-                        <div class="instructions">
-                            <h3>Instructions</h3>
-                            <ol id="instructions-list"></ol>
-                        </div>
-                    </div>
-                    <button id="generate-btn" onclick="resetForm()">Start Over</button>
+                <div class="category">
+                    <i class="fas fa-pizza-slice"></i>
+                    <span>Comfort Food</span>
+                </div>
+                <div class="category">
+                    <i class="fas fa-leaf"></i>
+                    <span>Healthy Options</span>
+                </div>
+                <div class="category">
+                    <i class="fas fa-cookie"></i>
+                    <span>Desserts</span>
                 </div>
             </div>
-        </main>
+        </header>
+        
+        <div class="quick-recipes">
+            <h2>Quick Recipe Options</h2>
+            <div class="recipe-grid">
+                <div class="recipe-option" onclick="showQuickRecipe('pasta')">
+                    <img src="food1.avif" alt="Pasta Carbonara">
+                    <h3>Pasta Carbonara</h3>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-clock"></i> 30 mins</span>
+                        <span><i class="fas fa-utensils"></i> Easy</span>
+                    </div>
+                </div>
+                <div class="recipe-option" onclick="showQuickRecipe('pizza')">
+                    <img src="food2.avif" alt="Pizza">
+                    <h3>Margherita Pizza</h3>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-clock"></i> 45 mins</span>
+                        <span><i class="fas fa-utensils"></i> Medium</span>
+                    </div>
+                </div>
+                <div class="recipe-option" onclick="showQuickRecipe('curry')">
+                    <img src="food3.avif" alt="Curry">
+                    <h3>Butter Chicken</h3>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-clock"></i> 60 mins</span>
+                        <span><i class="fas fa-utensils"></i> Medium</span>
+                    </div>
+                </div>
+                <div class="recipe-option" onclick="showQuickRecipe('salad')">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Greek Salad">
+                    <h3>Greek Salad</h3>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-clock"></i> 15 mins</span>
+                        <span><i class="fas fa-utensils"></i> Easy</span>
+                    </div>
+                </div>
+                <div class="recipe-option" onclick="showQuickRecipe('soup')">
+                    <img src="https://images.unsplash.com/photo-1548943487-a2e4e43b4853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Tomato Soup">
+                    <h3>Tomato Soup</h3>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-clock"></i> 25 mins</span>
+                        <span><i class="fas fa-utensils"></i> Easy</span>
+                    </div>
+                </div>
+                <div class="recipe-option" onclick="showQuickRecipe('dessert')">
+                    <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Chocolate Cake">
+                    <h3>Chocolate Cake</h3>
+                    <div class="recipe-info">
+                        <span><i class="fas fa-clock"></i> 90 mins</span>
+                        <span><i class="fas fa-utensils"></i> Hard</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="get-recipe-section">
+            <h2>Want a Custom Recipe?</h2>
+            <p>Tell us what ingredients you have, and we'll create a personalized recipe just for you!</p>
+            <a href="recipe-form.html" class="get-recipe-btn">
+                <i class="fas fa-magic"></i> Get Your Recipe
+            </a>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
