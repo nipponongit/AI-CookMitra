@@ -6,8 +6,62 @@
     <title>CookMitra - Your Recipe Assistant</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="sidebar">
+        <div class="developer-profiles">
+            <div class="company-logo">
+                <span>C</span><span>म</span>
+            </div>
+            <div class="main-profile-icon">
+                <i class="fas fa-users profile-icon"></i>
+                <div class="profile-dropdown">
+                    <div class="developer-profile">
+                        <i class="fas fa-code profile-icon"></i>
+                        <div class="profile-details">
+                            <h3>Nippon Tadrishi</h3>
+                            <p class="role">Frontend Developer</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                            <p class="bio">Passionate about creating beautiful and functional user interfaces.</p>
+                        </div>
+                    </div>
+                    <div class="developer-profile">
+                        <i class="fas fa-server profile-icon"></i>
+                        <div class="profile-details">
+                            <h3>Saksham Chaudhary</h3>
+                            <p class="role">Backend Developer</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                            <p class="bio">Expert in building robust and scalable backend systems.</p>
+                        </div>
+                    </div>
+                    <div class="developer-profile">
+                        <i class="fas fa-paint-brush profile-icon"></i>
+                        <div class="profile-details">
+                            <h3>Shahin</h3>
+                            <p class="role">UI/UX Designer</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                            <p class="bio">Creating intuitive and engaging user experiences.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>Cook<span class="hindi">मित्र</span></h1>
@@ -87,11 +141,17 @@
         </div>
 
         <div class="get-recipe-section">
-            <h2>Want a Custom Recipe?</h2>
-            <p>Tell us what ingredients you have, and we'll create a personalized recipe just for you!</p>
-            <a href="recipe-form.html" class="get-recipe-btn">
-                <i class="fas fa-magic"></i> Get Your Recipe
-            </a>
+            <h2>Get Your Recipe</h2>
+            <p>Choose how you want to find your recipe:</p>
+            
+            <div class="search-options">
+                <div class="search-option">
+                    <h3>Start with ingredients?</h3>
+                    <a href="recipe-form.html" class="get-recipe-btn">
+                        <i class="fas fa-magic"></i> Get Your Recipe
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>

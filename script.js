@@ -1,6 +1,95 @@
 // Spoonacular API configuration
-const API_KEY = '701b3c298a074e34b17c67fc9778e77b'; 
+const API_KEY = '701b3c298a074e34b17c67fc9778e77b';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
+
+// Function to fetch recipes based on ingredients
+async function searchRecipes() {
+    const ingredients = document.getElementById('ingredients').value;
+    const cuisine = document.getElementById('cuisine').value;
+    const servings = document.getElementById('servings').value;
+
+    try {
+        const response = await fetch(`${BASE_URL}/findByIngredients?ingredients=${ingredients}&number=5&apiKey=${API_KEY}`);
+        const data = await response.json();
+        
+        if (data.length === 0) {
+            showError('No recipes found with these ingredients. Try different ingredients.');
+            return;
+        }
+
+        displayRecipes(data);
+    } catch (error) {
+        showError('Error fetching recipes. Please try again later.');
+        console.error('Error:', error);
+    }
+}
+
+// Function to display recipes
+function displayRecipes(recipes) {
+    const recipeGrid = document.querySelector('.recipe-grid');
+    recipeGrid.innerHTML = '';
+
+    recipes.forEach(recipe => {
+        const recipeCard = document.createElement('div');
+        recipeCard.className = 'recipe-option-card';
+        recipeCard.innerHTML = `
+            <img src="${recipe.image}" alt="${recipe.title}">
+            <h3>${recipe.title}</h3>
+            <div class="recipe-info">
+                <span><i class="fas fa-clock"></i> ${recipe.readyInMinutes} mins</span>
+                <span><i class="fas fa-users"></i> ${recipe.servings} servings</span>
+            </div>
+        `;
+        recipeCard.addEventListener('click', () => showRecipeDetails(recipe.id));
+        recipeGrid.appendChild(recipeCard);
+    });
+}
+
+// Function to show detailed recipe
+async function showRecipeDetails(recipeId) {
+    try {
+        const response = await fetch(`${BASE_URL}/${recipeId}/information?apiKey=${API_KEY}`);
+        const recipe = await response.json();
+
+        const recipeCard = document.querySelector('.recipe-card');
+        recipeCard.innerHTML = `
+            <h2>${recipe.title}</h2>
+            <div class="recipe-details">
+                <div class="ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>
+                        ${recipe.extendedIngredients.map(ing => `<li>${ing.original}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="instructions">
+                    <h3>Instructions</h3>
+                    <ol>
+                        ${recipe.analyzedInstructions[0]?.steps.map(step => `<li>${step.step}</li>`).join('') || 'No instructions available'}
+                    </ol>
+                </div>
+            </div>
+        `;
+        recipeCard.style.display = 'block';
+    } catch (error) {
+        showError('Error fetching recipe details. Please try again later.');
+        console.error('Error:', error);
+    }
+}
+
+// Function to show error messages
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    
+    const container = document.querySelector('.container');
+    container.insertBefore(errorDiv, container.firstChild);
+    
+    setTimeout(() => errorDiv.remove(), 5000);
+}
+
+// Event Listeners
+document.querySelector('.search-btn').addEventListener('click', searchRecipes);
 
 // DOM elements
 const recipeName = document.getElementById('recipe-name');
@@ -13,6 +102,187 @@ const inputForm = document.getElementById('input-form');
 let userIngredients = [];
 let userCuisine = '';
 let userServings = 4;
+
+// Predefined recipes database
+const recipeDatabase = {
+    "pasta carbonara": {
+        name: "Pasta Carbonara",
+        ingredients: [
+            "400g spaghetti",
+            "200g pancetta or guanciale",
+            "4 large eggs",
+            "50g pecorino cheese",
+            "50g parmesan",
+            "Freshly ground black pepper",
+            "Salt"
+        ],
+        instructions: [
+            "Bring a large pot of salted water to boil and cook spaghetti according to package instructions.",
+            "While pasta cooks, fry pancetta in a large pan until crispy.",
+            "In a bowl, whisk eggs and grated cheeses together.",
+            "Drain pasta, reserving some cooking water.",
+            "Working quickly, mix hot pasta with pancetta, then stir in egg mixture.",
+            "Add pasta water as needed to create a creamy sauce.",
+            "Season with black pepper and serve immediately."
+        ]
+    },
+    "margherita pizza": {
+        name: "Margherita Pizza",
+        ingredients: [
+            "500g pizza dough",
+            "400g canned tomatoes",
+            "200g fresh mozzarella",
+            "Fresh basil leaves",
+            "Olive oil",
+            "Salt"
+        ],
+        instructions: [
+            "Preheat oven to 475°F (245°C).",
+            "Roll out pizza dough on a floured surface.",
+            "Spread crushed tomatoes over the dough.",
+            "Tear mozzarella and distribute evenly.",
+            "Drizzle with olive oil and season with salt.",
+            "Bake for 10-12 minutes until crust is golden.",
+            "Top with fresh basil leaves before serving."
+        ]
+    },
+    "butter chicken": {
+        name: "Butter Chicken",
+        ingredients: [
+            "500g chicken thighs",
+            "1 cup yogurt",
+            "2 tbsp lemon juice",
+            "2 tsp garam masala",
+            "2 tsp turmeric",
+            "2 tsp cumin",
+            "2 tsp chili powder",
+            "2 tbsp butter",
+            "1 onion, chopped",
+            "3 garlic cloves, minced",
+            "1 tbsp ginger, grated",
+            "400g canned tomatoes",
+            "1 cup heavy cream",
+            "Fresh cilantro"
+        ],
+        instructions: [
+            "Marinate chicken in yogurt, lemon juice, and spices for at least 1 hour.",
+            "Grill or bake chicken until cooked through.",
+            "In a pan, melt butter and sauté onions, garlic, and ginger.",
+            "Add tomatoes and cook until softened.",
+            "Blend sauce until smooth, return to pan.",
+            "Add cream and cooked chicken, simmer for 10 minutes.",
+            "Garnish with fresh cilantro and serve with rice or naan."
+        ]
+    },
+    "chicken biryani": {
+        name: "Chicken Biryani",
+        ingredients: [
+            "500g basmati rice",
+            "500g chicken pieces",
+            "2 onions, sliced",
+            "2 tomatoes, chopped",
+            "1 cup yogurt",
+            "2 tbsp ginger-garlic paste",
+            "2 tsp biryani masala",
+            "1 tsp turmeric",
+            "1 tsp red chili powder",
+            "Fresh mint leaves",
+            "Fresh coriander leaves",
+            "Saffron strands",
+            "Ghee or oil",
+            "Salt"
+        ],
+        instructions: [
+            "Soak rice for 30 minutes, then cook until 70% done.",
+            "Marinate chicken with yogurt and spices for 1 hour.",
+            "Fry onions until golden brown.",
+            "Cook marinated chicken with tomatoes until tender.",
+            "Layer rice and chicken in a pot, adding fried onions and herbs.",
+            "Sprinkle saffron milk on top.",
+            "Cover and cook on low heat for 20 minutes.",
+            "Serve hot with raita."
+        ]
+    },
+    "chocolate cake": {
+        name: "Chocolate Cake",
+        ingredients: [
+            "2 cups all-purpose flour",
+            "2 cups sugar",
+            "3/4 cup cocoa powder",
+            "2 tsp baking powder",
+            "1.5 tsp baking soda",
+            "1 tsp salt",
+            "1 cup milk",
+            "1/2 cup vegetable oil",
+            "2 eggs",
+            "2 tsp vanilla extract",
+            "1 cup boiling water"
+        ],
+        instructions: [
+            "Preheat oven to 350°F (175°C).",
+            "Mix dry ingredients in a large bowl.",
+            "Add milk, oil, eggs, and vanilla, beat for 2 minutes.",
+            "Stir in boiling water (batter will be thin).",
+            "Pour into greased and floured cake pans.",
+            "Bake for 30-35 minutes until toothpick comes out clean.",
+            "Cool for 10 minutes, then remove from pans.",
+            "Frost when completely cool."
+        ]
+    },
+    "vegetable stir fry": {
+        name: "Vegetable Stir Fry",
+        ingredients: [
+            "2 cups mixed vegetables (bell peppers, broccoli, carrots, snap peas)",
+            "2 tbsp soy sauce",
+            "1 tbsp oyster sauce",
+            "1 tsp sugar",
+            "2 cloves garlic, minced",
+            "1 inch ginger, grated",
+            "2 tbsp vegetable oil",
+            "1 tsp cornstarch",
+            "2 tbsp water",
+            "Spring onions for garnish"
+        ],
+        instructions: [
+            "Cut vegetables into bite-sized pieces.",
+            "Mix soy sauce, oyster sauce, and sugar in a bowl.",
+            "Heat oil in a wok or large pan.",
+            "Stir-fry garlic and ginger until fragrant.",
+            "Add vegetables and stir-fry for 3-4 minutes.",
+            "Add sauce mixture and stir well.",
+            "Mix cornstarch with water and add to thicken sauce.",
+            "Garnish with spring onions and serve hot."
+        ]
+    },
+    "masala dosa": {
+        name: "Masala Dosa",
+        ingredients: [
+            "2 cups rice",
+            "1 cup urad dal",
+            "1/2 tsp fenugreek seeds",
+            "Salt to taste",
+            "Oil for cooking",
+            "For potato filling:",
+            "4 potatoes, boiled and mashed",
+            "1 onion, chopped",
+            "2 green chilies, chopped",
+            "1/2 tsp mustard seeds",
+            "1/2 tsp turmeric",
+            "Curry leaves",
+            "Oil for tempering"
+        ],
+        instructions: [
+            "Soak rice and dal separately for 6 hours.",
+            "Grind to make a smooth batter, ferment overnight.",
+            "For filling, heat oil and add mustard seeds.",
+            "Add onions, chilies, and curry leaves, sauté.",
+            "Add mashed potatoes and spices, mix well.",
+            "Heat a griddle, pour batter and spread thin.",
+            "Drizzle oil, cook until crisp.",
+            "Add potato filling, fold and serve with chutney."
+        ]
+    }
+};
 
 // Function to handle next step
 function nextStep(currentStep) {
@@ -544,4 +814,99 @@ function checkForQuickRecipe() {
 document.addEventListener('DOMContentLoaded', () => {
     checkForQuickRecipe();
     handleRecipeSelection();
-}); 
+});
+
+function showRecipeForm() {
+    // Hide the search section
+    document.querySelector('.get-recipe-section').style.display = 'none';
+    
+    // Show the recipe form
+    document.querySelector('.recipe-form').style.display = 'block';
+    
+    // Scroll to form
+    document.querySelector('.recipe-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+function searchRecipe() {
+    const searchInput = document.getElementById('recipe-search');
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const servings = parseInt(document.getElementById('search-servings').value) || 4;
+    
+    if (searchTerm === '') {
+        alert('Please enter a recipe name');
+        return;
+    }
+    
+    // Find matching recipe
+    const matchingRecipe = Object.entries(recipeDatabase).find(([name]) => 
+        name.includes(searchTerm) || searchTerm.includes(name)
+    );
+    
+    if (matchingRecipe) {
+        // Hide the form
+        document.querySelector('.recipe-form').style.display = 'none';
+        
+        // Show and update recipe card
+        const recipeCard = document.querySelector('.recipe-card');
+        recipeCard.style.display = 'block';
+        
+        // Display the recipe with servings
+        displayRecipe(matchingRecipe[1], servings);
+    } else {
+        alert('Recipe not found. Please try another name or use the ingredient-based search.');
+    }
+}
+
+function displayRecipe(recipe, servings = 4) {
+    // Update recipe details
+    document.getElementById('recipe-name').textContent = `${recipe.name} (${servings} servings)`;
+    
+    // Clear and update ingredients with adjusted quantities
+    const ingredientsList = document.getElementById('ingredients-list');
+    ingredientsList.innerHTML = '';
+    recipe.ingredients.forEach(ingredient => {
+        const li = document.createElement('li');
+        // Try to extract number from ingredient string
+        const match = ingredient.match(/^([\d.]+)?\s*(.+)/);
+        if (match && match[1]) {
+            // If there's a number, adjust it for servings
+            const originalAmount = parseFloat(match[1]);
+            const adjustedAmount = (originalAmount * servings / 4).toFixed(1);
+            li.textContent = `${adjustedAmount} ${match[2]}`;
+        } else {
+            li.textContent = ingredient;
+        }
+        ingredientsList.appendChild(li);
+    });
+    
+    // Clear and update instructions
+    const instructionsList = document.getElementById('instructions-list');
+    instructionsList.innerHTML = '';
+    recipe.instructions.forEach((instruction, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${index + 1}. ${instruction}`;
+        instructionsList.appendChild(li);
+    });
+    
+    // Make sure recipe card is visible
+    const recipeCard = document.querySelector('.recipe-card');
+    recipeCard.style.display = 'block';
+    
+    // Add a back button
+    const backButton = document.createElement('button');
+    backButton.textContent = '← Back to Search';
+    backButton.className = 'back-button';
+    backButton.onclick = function() {
+        recipeCard.style.display = 'none';
+        document.querySelector('.recipe-form').style.display = 'block';
+        document.querySelector('.search-section').style.display = 'block';
+    };
+    
+    // Add the back button to the recipe card if it doesn't exist
+    if (!recipeCard.querySelector('.back-button')) {
+        recipeCard.insertBefore(backButton, recipeCard.firstChild);
+    }
+    
+    // Scroll to recipe
+    recipeCard.scrollIntoView({ behavior: 'smooth' });
+} 

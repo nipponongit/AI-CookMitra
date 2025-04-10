@@ -3,111 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Recipe - CookMitra</title>
+    <title>CookMitra - Recipe Form</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="sidebar">
+        <div class="developer-profiles">
+            <div class="company-logo">
+                <span>C</span><span>म</span>
+            </div>
+            <div class="main-profile-icon">
+                <i class="fas fa-users profile-icon"></i>
+                <div class="profile-dropdown">
+                    <div class="developer-profile">
+                        <i class="fas fa-code profile-icon"></i>
+                        <div class="profile-details">
+                            <h3>Nippon Tadrishi</h3>
+                            <p class="role">Frontend Developer</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                            <p class="bio">Passionate about creating beautiful and functional user interfaces.</p>
+                        </div>
+                    </div>
+                    <div class="developer-profile">
+                        <i class="fas fa-server profile-icon"></i>
+                        <div class="profile-details">
+                            <h3>Saksham Chaudhary</h3>
+                            <p class="role">Backend Developer</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                            <p class="bio">Expert in building robust and scalable backend systems.</p>
+                        </div>
+                    </div>
+                    <div class="developer-profile">
+                        <i class="fas fa-paint-brush profile-icon"></i>
+                        <div class="profile-details">
+                            <h3>Shahin</h3>
+                            <p class="role">UI/UX Designer</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            </div>
+                            <p class="bio">Creating intuitive and engaging user experiences.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>Get Your <span class="hindi">पकवान</span> Recipe</h1>
             <p>Tell us what you have, and we'll suggest a delicious recipe!</p>
         </header>
 
-        <main>
-            <div class="recipe-container">
-                <div class="input-form" id="input-form">
-                    <div class="form-step active" id="ingredients-step">
-                        <h2>Step 1: What ingredients do you have?</h2>
-                        <p>Enter the ingredients you have available (comma separated)</p>
-                        <input type="text" id="ingredients-input" placeholder="e.g., chicken, rice, tomatoes, onions">
-                        
-                        <div class="common-ingredients">
-                            <h3>Common Ingredients</h3>
-                            <div class="ingredient-tags">
-                                <span class="ingredient-tag" onclick="addIngredient('chicken')">Chicken</span>
-                                <span class="ingredient-tag" onclick="addIngredient('rice')">Rice</span>
-                                <span class="ingredient-tag" onclick="addIngredient('tomatoes')">Tomatoes</span>
-                                <span class="ingredient-tag" onclick="addIngredient('onions')">Onions</span>
-                                <span class="ingredient-tag" onclick="addIngredient('garlic')">Garlic</span>
-                                <span class="ingredient-tag" onclick="addIngredient('potatoes')">Potatoes</span>
-                                <span class="ingredient-tag" onclick="addIngredient('eggs')">Eggs</span>
-                                <span class="ingredient-tag" onclick="addIngredient('cheese')">Cheese</span>
-                                <span class="ingredient-tag" onclick="addIngredient('pasta')">Pasta</span>
-                                <span class="ingredient-tag" onclick="addIngredient('mushrooms')">Mushrooms</span>
-                            </div>
-                        </div>
+        <div class="main-content">
+            <div class="search-section">
+                <h2>Search for a Recipe</h2>
+                <div class="search-container">
+                    <input type="text" id="recipe-search" placeholder="Enter recipe name...">
+                    <button onclick="searchRecipe()">Search</button>
+                </div>
+                <div class="servings-input">
+                    <label for="search-servings">Number of Servings:</label>
+                    <input type="number" id="search-servings" min="1" max="20" value="4">
+                </div>
+                <p class="or-text">OR</p>
+            </div>
 
-                        <button class="next-btn" onclick="nextStep('ingredients')">Next</button>
+            <div class="recipe-form">
+                <h2>Create Your Recipe</h2>
+                <form id="input-form">
+                    <div class="form-step active" id="ingredients-step">
+                        <h3>Step 1: Enter Your Ingredients</h3>
+                        <p>List the ingredients you have, separated by commas</p>
+                        <input type="text" id="ingredients-input" placeholder="e.g., chicken, rice, tomatoes">
+                        <button type="button" class="next-btn" onclick="nextStep('ingredients')">Next</button>
                     </div>
 
                     <div class="form-step" id="cuisine-step">
-                        <h2>Step 2: What type of cuisine do you prefer?</h2>
+                        <h3>Step 2: Choose Cuisine Type</h3>
+                        <p>Select your preferred cuisine style</p>
                         <select id="cuisine-input">
-                            <option value="">Select a cuisine</option>
+                            <option value="">Select Cuisine</option>
                             <option value="italian">Italian</option>
                             <option value="indian">Indian</option>
-                            <option value="chinese">Chinese</option>
                             <option value="mexican">Mexican</option>
+                            <option value="chinese">Chinese</option>
                             <option value="american">American</option>
                         </select>
-                        <button class="next-btn" onclick="nextStep('cuisine')">Next</button>
+                        <button type="button" class="next-btn" onclick="nextStep('cuisine')">Next</button>
                     </div>
 
                     <div class="form-step" id="servings-step">
-                        <h2>Step 3: How many servings do you need?</h2>
+                        <h3>Step 3: Number of Servings</h3>
+                        <p>How many people are you cooking for?</p>
                         <input type="number" id="servings-input" min="1" max="20" value="4">
-                        <button class="next-btn" onclick="nextStep('servings')">Find Recipes</button>
+                        <button type="button" class="next-btn" onclick="nextStep('servings')">Generate Recipe</button>
                     </div>
+                </form>
+            </div>
+        </div>
 
-                    <div class="form-step" id="recipe-options-step">
-                        <h2>Choose Your Recipe</h2>
-                        <p>Here are some delicious options based on your preferences:</p>
-                        <div class="recipe-options-grid">
-                            <div class="recipe-option-card" onclick="selectRecipe('recipe1')">
-                                <img src="https://images.unsplash.com/photo-1473093226795-af9932fe5856?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1888&q=80" alt="Recipe 1">
-                                <h3>Spicy Chicken Pasta</h3>
-                                <div class="recipe-info">
-                                    <span><i class="fas fa-clock"></i> 35 mins</span>
-                                    <span><i class="fas fa-utensils"></i> Medium</span>
-                                </div>
-                            </div>
-                            <div class="recipe-option-card" onclick="selectRecipe('recipe2')">
-                                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Recipe 2">
-                                <h3>Vegetable Stir Fry</h3>
-                                <div class="recipe-info">
-                                    <span><i class="fas fa-clock"></i> 25 mins</span>
-                                    <span><i class="fas fa-utensils"></i> Easy</span>
-                                </div>
-                            </div>
-                            <div class="recipe-option-card" onclick="selectRecipe('recipe3')">
-                                <img src="https://images.unsplash.com/photo-1548943487-a2e4e43b4853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Recipe 3">
-                                <h3>Hearty Tomato Soup</h3>
-                                <div class="recipe-info">
-                                    <span><i class="fas fa-clock"></i> 30 mins</span>
-                                    <span><i class="fas fa-utensils"></i> Easy</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="recipe-card" style="display: none;">
+            <h2 id="recipe-name">Recipe Name</h2>
+            <div class="recipe-details">
+                <div class="ingredients">
+                    <h3>Ingredients</h3>
+                    <ul id="ingredients-list"></ul>
                 </div>
-
-                <div class="recipe-card" id="recipe-card" style="display: none;">
-                    <h2 id="recipe-name">Your Personalized Recipe</h2>
-                    <div class="recipe-details">
-                        <div class="ingredients">
-                            <h3>Ingredients</h3>
-                            <ul id="ingredients-list"></ul>
-                        </div>
-                        <div class="instructions">
-                            <h3>Instructions</h3>
-                            <ol id="instructions-list"></ol>
-                        </div>
-                    </div>
-                    <button id="generate-btn" onclick="resetForm()">Start Over</button>
+                <div class="instructions">
+                    <h3>Instructions</h3>
+                    <ol id="instructions-list"></ol>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
