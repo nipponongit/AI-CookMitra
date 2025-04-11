@@ -1,5 +1,5 @@
 // Spoonacular API configuration
-const API_KEY = '701b3c298a074e34b17c67fc9778e77b';
+const API_KEY = 'e66cb5d3906b48e7b1bb9efd14101447o';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 // Function to fetch recipes based on ingredients
@@ -686,12 +686,39 @@ function showRecipeDetails(recipeType) {
 }
 
 // Function to show quick recipe
-function showQuickRecipe(recipeType) {
-    // Redirect to recipe-form.html and show recipe details
-    window.location.href = 'recipe-form.html';
-    
-    // Store the recipe type for access after redirect
-    sessionStorage.setItem('quickRecipe', recipeType);
+async function showQuickRecipe(recipeType) {
+    try {
+        // Map recipe types to search terms
+        const searchTerms = {
+            'pasta': 'pasta carbonara',
+            'pizza': 'margherita pizza',
+            'curry': 'butter chicken',
+            'salad': 'greek salad',
+            'soup': 'tomato soup',
+            'dessert': 'chocolate cake'
+        };
+
+        const searchTerm = searchTerms[recipeType];
+        
+        // First, search for the recipe
+        const searchResponse = await fetch(`${BASE_URL}/complexSearch?query=${searchTerm}&number=1&apiKey=${API_KEY}`);
+        const searchData = await searchResponse.json();
+        
+        if (searchData.results && searchData.results.length > 0) {
+            const recipeId = searchData.results[0].id;
+            
+            // Store the recipe ID in sessionStorage
+            sessionStorage.setItem('selectedRecipeId', recipeId);
+            
+            // Redirect to recipe details page
+            window.location.href = 'recipe-details.html';
+        } else {
+            showError('Recipe not found. Please try again.');
+        }
+    } catch (error) {
+        showError('Error fetching recipe. Please try again later.');
+        console.error('Error:', error);
+    }
 }
 
 // Function to check and display quick recipe on page load

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Details - CookMitra</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cook<span class="hindi">मित्र</span></h1>
+            <p class="tagline">Your personal recipe assistant for delicious meals!</p>
+        </header>
+
+        <div class="recipe-details-container">
+            <button class="back-button" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i> Back to Recipes
+            </button>
+            
+            <div class="recipe-header">
+                <h2 id="recipe-title">Loading recipe...</h2>
+                <div class="recipe-meta">
+                    <span id="cooking-time"></span>
+                    <span id="servings"></span>
+                    <span id="difficulty"></span>
+                </div>
+            </div>
+
+            <div class="recipe-content">
+                <div class="recipe-image">
+                    <img id="recipe-image" src="" alt="Recipe Image">
+                </div>
+                
+                <div class="recipe-info">
+                    <div class="ingredients">
+                        <h3>Ingredients</h3>
+                        <ul id="ingredients-list"></ul>
+                    </div>
+                    
+                    <div class="instructions">
+                        <h3>Instructions</h3>
+                        <ol id="instructions-list"></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Spoonacular API configuration
+        const API_KEY = '701b3c298a074e34b17c67fc9778e77b';
+        const BASE_URL = 'https://api.spoonacular.com/recipes';
+
+        async function loadRecipeDetails() {
+            try {
+                const recipeId = sessionStorage.getItem('selectedRecipeId');
+                if (!recipeId) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Fetch recipe information
+                const response = await fetch(`${BASE_URL}/${recipeId}/information?apiKey=${API_KEY}`);
+                const recipe = await response.json();
+
+                // Update recipe title
+                document.getElementById('recipe-title').textContent = recipe.title;
+
+                // Update recipe meta information
+                document.getElementById('cooking-time').innerHTML = `<i class="fas fa-clock"></i> ${recipe.readyInMinutes} mins`;
+                document.getElementById('servings').innerHTML = `<i class="fas fa-users"></i> ${recipe.servings} servings`;
+                document.getElementById('difficulty').innerHTML = `<i class="fas fa-signal"></i> ${recipe.dishTypes?.[0] || 'Medium'}`;
+
+                // Update recipe image
+                document.getElementById('recipe-image').src = recipe.image;
+                document.getElementById('recipe-image').alt = recipe.title;
+
+                // Update ingredients
+                const ingredientsList = document.getElementById('ingredients-list');
+                ingredientsList.innerHTML = recipe.extendedIngredients
+                    .map(ing => `<li>${ing.original}</li>`)
+                    .join('');
+
+                // Update instructions
+                const instructionsList = document.getElementById('instructions-list');
+                if (recipe.analyzedInstructions && recipe.analyzedInstructions.length > 0) {
+                    instructionsList.innerHTML = recipe.analyzedInstructions[0].steps
+                        .map(step => `<li>${step.step}</li>`)
+                        .join('');
+                } else {
+                    instructionsList.innerHTML = '<li>No instructions available</li>';
+                }
+
+            } catch (error) {
+                console.error('Error loading recipe details:', error);
+                document.getElementById('recipe-title').textContent = 'Error loading recipe';
+            }
+        }
+
+        // Load recipe details when the page loads
+        document.addEventListener('DOMContentLoaded', loadRecipeDetails);
+    </script>
+</body>
+</html> 
